@@ -5,7 +5,7 @@ Config { overrideRedirect = False
                            ,"FontAwesome 14"]
        , bgColor  = "#302A35"
        , fgColor  = "#f8f8f2"
-       , position = TopSize L 95 20
+       , position = TopSize L 96 20
        , alpha    = 235
        , commands = [ Run WeatherX "ESGG"
                        [ ("clear",         "<fn=1></fn>")
@@ -19,25 +19,24 @@ Config { overrideRedirect = False
                        , ("partly cloudy", "<fn=1>󰖕</fn>")
                        , ("considerable cloudiness", "<fn=1>󰖗</fn>")
                        ]
-                       [ "--template", "<windMs>m/s <fn=1></fn> <tempC>°C  <skyConditionS>", "-L", "0"
-                       , "-H", "25", "--low"   , "lightblue", "--normal", "#f8f8f2", "--high"  , "red"] 36000
-                    , Run Cpu [ "--template", "<fn=2>\xf108</fn>    <total>%", "-L", "3", "-H", "50", "--high"  , "red", "--normal", "green"] 10
-                    , Run CoreTemp [ "-t", "<fn=2></fn> <core0>°C", "-L", "40", "-H", "75", "-l", "green", "-n", "yellow", "-h", "red"] 50
-                    , Run Memory["--template", "<fn=2>\xf233</fn>   <used>M"] 10
-                    , Run Date "%a %d %b <fc=#8be9fd>%H:%M</fc>" "date" 10
-                    , Run DiskU [("/home","<fn=2>\xf0c7</fn>   <free>")] [] 60
+                       [ "--template", "<fc=#8be9fd><windMs>m/s<fn=1></fn> <tempC>°C <skyConditionS></fc>", "-L", "0"
+                       , "-H", "25", "--low"   , "lightblue", "--normal", "magenta", "--high"  , "red"] 36000
+                    , Run Cpu [ "--template", "<fc=#DA70D6><fn=2>\xf108</fn>    <total>%</fc>", "-L", "3", "-H", "50", "--high", "red"] 10
+                    , Run CoreTemp [ "-t", "<fc=#FF0000><fn=2></fn></fc> <fc=#FF0000><core0>°C</fc>", "-L", "40", "-H", "75", "-l", "green", "-n", "yellow", "-h", "red"] 50
+                    , Run Memory["--template", "<fc=#6495ED><fn=2>\xf233</fn>   <used>M</fc>", "-H", "4000", "-h", "red"] 10
+                    , Run Date "<fc=#8be9fd>%a %d %b</fc> <fc=magenta>%H:%M</fc>" "date" 10
+                    , Run DiskU [("/home","<fc=#FF69B4><fn=2>\xf0c7</fn></fc>   <free>")] ["-L", "80", "-l", "#FF69B4", "-H", "80", "-h", "red"] 60
                     , Run Com ".local/bin/scripts/xmobarDebianversion.fish" [] "osversion" 36000
-                    , Run BatteryP ["BAT0"] ["-t", "<acstatus> <timeleft>", "--", "-a", "notify-send -u critical 'Battery is running out!'"
-                       , "-A", "5", "-O", "Charging", "-o", "Battery:<left>%"] 360
-                    , Run DynNetwork ["-t", "<fn=2>\xf0ab</fn>  <rx>kB/s <fn=2>\xf0aa</fn>  <tx>kB/s"] 10
+                    , Run BatteryP ["BAT0"] ["-t", "<acstatus> <fc=#FF8C00><timeleft></fc>", "-H", "20", "-h", "#FF8C00", "-L", "20", "-l", "#8B0000", "--", "-a", "notify-send -u critical 'Battery is running out!'"
+                       , "-A", "10", "-O", "<fc=#7FFF00>Charging</fc>", "-o", "<fc=#FF8C00>Battery:</fc><left>%"] 60
+                    , Run DynNetwork ["-t", "<fc=#98FB98><fn=2>\xf0ab</fn>  <rx>kB/s</fc> <fc=#FF8C00><fn=2>\xf0aa</fn>  <tx>kB/s</fc>"] 10
                     , Run XMonadLog
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog%}<fn=1></fn> %osversion%   <fn=2></fn>   %date%  %ESGG%  {%disku%  |  %battery% |  %coretemp%  |  %memory%  |  %cpu%  |  %dynnetwork%"
+       , template = "%XMonadLog%}<fc=yellow><fn=1></fn></fc> <fc=#ff4500>%osversion%</fc>   <fc=#8be9fd><fn=2></fn></fc>   %date%  %ESGG%  {%disku%    %battery%   %coretemp%    %memory%    %cpu%    %dynnetwork%"
        }
 
---%ESGG%
 
 
 

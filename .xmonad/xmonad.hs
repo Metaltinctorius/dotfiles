@@ -112,10 +112,6 @@ myKeys =
   , ("M-<Return>", spawn "kitty")
   , ("M-S-h", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))  -- Run the above help command to visualize default default keybindings
      -- Evil keybindings for window navigation overwriting defaults
-  , ("M-b-k", kill)
-  , ("M-w-g", windows W.focusUp)
-  , ("M-w-j", windows W.focusDown)
-  , ("M-w-m-n", sendMessage NextLayout)
   ]
 
 
@@ -126,6 +122,9 @@ myKeys =
 -- VARIABLE DECLARATIONS
 myTerminal :: String
 myTerminal = "kitty"
+
+myEditor :: String
+myEditor = "emacsclient -c -a 'emacs'"
 
 myModMask :: KeyMask
 myModMask = mod4Mask
@@ -206,29 +205,30 @@ myXmobarPP :: PP
 myXmobarPP = def
   { ppSep             = magenta " • "
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = wrap " " "". xmobarBorder "Top" "#8be9fd" 2
-    , ppHidden          = lowWhite . wrap " " ""
+    , ppCurrent         = magenta . wrap " " "". xmobarBorder "Top" "#8be9fd" 2
+    , ppHidden          = blue . wrap " " ""
     --, ppHiddenNoWindows = lowWhite . wrap " " ""
     , ppUrgent          = red . wrap (yellow "!") (yellow "!")
     , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
     , ppExtras          = [logTitles formatFocused formatUnfocused]
+    , ppLayout          = turqoise
     }
   where
-    formatFocused   = wrap (white    "[") (white    "]") . magenta . ppWindow
+    formatFocused   = wrap (turqoise    "[") (turqoise    "]") . magenta . ppWindow
     formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
 
     -- | Windows should have *some* title, which should not exceed a sane length.
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
 
-    blue, lowWhite, magenta, red, white, yellow :: String -> String
+    blue, lowWhite, magenta, red, white, yellow, turqoise :: String -> String
+    turqoise = xmobarColor "#8be9fd" ""
     magenta  = xmobarColor "#ff79c6" ""
     blue     = xmobarColor "#bd93f9" ""
     white    = xmobarColor "#f8f8f2" ""
     yellow   = xmobarColor "#f1fa8c" ""
     red      = xmobarColor "#ff5555" ""
     lowWhite = xmobarColor "#bbbbbb" ""
-
 
 
 
