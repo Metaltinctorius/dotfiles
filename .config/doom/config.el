@@ -1,8 +1,8 @@
-;; Doom Emacs configuration of Niklas Andersson
+;; Doom Emacs configuration
 
 
-(setq user-full-name "Niklas Andersson"
-      user-mail-address "niklas.andersson91@hotmail.com")
+(setq user-full-name ""
+      user-mail-address "")
 
 ;; ---------Fonts--------
 (setq doom-font (font-spec :family "Hasklug Nerd Font Mono" :size 15 :foundry 'ADBO :weight 'semi-bold :slant 'normal :width 'normal :spacing 100 :scalable 'true))
@@ -13,25 +13,50 @@
 ;; ------- Loading the themes ------
 (use-package! doom-themes
   :config
-  (setq doom-theme 'doom-dracula
-        doom-themes-treemacs-"Eclipse"))
+  (setq doom-theme 'doom-dracula))
 
-;; doom-themes-treemacs-theme "doom-atom"
-;; doom-theme 'doom-dracula))
-;;(treemacs-load-theme "doom-atom")
+(setq doom-themes-treemacs-theme "doom-colors")
+  (doom-themes-treemacs-config)
 
 ;; ----- Projectile project paths -------
 (setq projectile-project-search-path '("~/Skolrelaterat/Datorvetenskap/Code/" "~/Orgfiles/"))
 
+;; ------ PATHS for certain plugins -----
+;; Being explicit here to secure that emacs is looking for executables in these folders
+(setenv "PATH" (concat (getenv "PATH") ":/home/nicke/.ghcup/bin/"))
+(setq exec-path (append exec-path '("/home/nicke/.ghcup/bin/")))
+
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk-amd64")
+(setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk-amd64/bin/java")
+
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/lib/erlang/bin"))
+(setq exec-path (append exec-path '("/usr/lib/erlang/bin")))
+
+
+
 
 ;; ------ Org-mode settings --------
 
+;; --Org-agenda custom view---
+(setq org-agenda-custom-commands
+      '(("v" "A better view"
+         ((tags "CATEGORY=\"Schedule\""
+                ((org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "Schedule:"))))
+         (agenda "")
+         (alltodo ""))))
+
 ;; -- Org directories --
 (setq org-directory "~/Orgfiles/")
-(setq org-agenda-files '("~/Orgfiles/deadlines.org"))
+;;(setq org-agenda-files '("~/Orgfiles/deadlines.org"))
 
 ;; Days before scheduled tasks show up in org-agenda
 (setq org-deadline-warning-days 31)
+
+;; Hide bold, italics, color markers in the org documents
+(setq org-hide-emphasis-markers t)
 
 ;; Headline size
 (after! org
@@ -65,10 +90,6 @@
           (setq lsp-ui-peek-show-directory t)
           (setq lsp-ui-imenu-auto-refresh t))
 
-(setenv "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk-amd64")
-(setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk-amd64/bin/java")
-
-
 
 ;; ------ My custom configurations of certain packages --------
 (use-package! yasnippet
@@ -96,7 +117,8 @@
 
 (use-package! treemacs
   :config
-  (setq treemacs-is-never-other-window t))
+  (setq treemacs-is-never-other-window t)
+  (setq treemacs-follow-mode t))
 
 (use-package! helm
   :config
@@ -179,15 +201,8 @@
        :desc "refresh imenu"
        "i r" #'lsp-ui-imenu--refresh))
 
-(use-package! vterm
-  :config
-  (defun my-vterm-keybindings ()
-    (map! :map vterm-mode-map
-          "C-c k" #'vterm-send-interrupt
-          "<C-backspace>" #'vterm-send-interrupt
-          "C-c C-k" #'vterm-send-kill))
 
-  (add-hook 'vterm-mode-hook #'my-vterm-keybindings))
+
 
 ;; --- hoogle keybind for info in buffer from point----
 ;; -- Also applies web-lookup in a new buffer with another keybind---
@@ -202,7 +217,33 @@
   (setq haskell-hoogle-command "hoogle")
   (setq haskell-hoogle-lookup-from-website-command "hoogle web lookup"))
 
+
+;; WINDOW NAVIGATING KEYBINDINGS --  SIMULATING XMONAD
+(define-key evil-normal-state-map (kbd "M-j") 'evil-window-next)
+(define-key evil-normal-state-map (kbd "M-J") 'evil-window-rotate-downwards)
+(define-key evil-normal-state-map (kbd "M-k") 'evil-window-prev)
+(define-key evil-normal-state-map (kbd "M-K") 'evil-window-rotate-upwards)
+(define-key evil-normal-state-map (kbd "M-l") 'evil-window-increase-width)
+(define-key evil-normal-state-map (kbd "M-h") 'evil-window-decrease-width)
+(define-key evil-normal-state-map (kbd "M-+") 'evil-window-increase-height)
+(define-key evil-normal-state-map (kbd "M--") 'evil-window-decrease-height)
+(define-key evil-normal-state-map (kbd "M-C") 'evil-window-delete)
+(define-key evil-normal-state-map (kbd "M-w 0") 'balance-windows)
+
+
+
   ;; --- Showcase of a regular emacs config, above is shown how the same configuration is setup in doom emacs----
 ;;(require 'haskell-mode)
 ;;(define-key haskell-mode-map "\C-ch" 'haskell-hoogle)
 ;(setq haskell-hoogle-command "hoogle"
+
+;; ---- Does not seem to work anymore -----
+;;(use-package! vterm
+;;  :config
+;;  (defun my-vterm-keybindings ()
+;;    (map! :map vterm-mode-map
+;;          "C-c k" #'vterm-send-interrupt
+;;          "<C-backspace>" #'vterm-send-interrupt
+;;          "C-c C-k" #'vterm-send-kill))
+
+;;  (add-hook 'vterm-mode-hook #'my-vterm-keybindings))

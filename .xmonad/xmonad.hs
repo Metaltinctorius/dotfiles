@@ -37,6 +37,8 @@ import XMonad.Actions.Submap
     -- Layout modifiers
 import XMonad.Layout.Spacing      -- Adding spacing around windows
 import XMonad.Layout.Renamed      -- Combinator to change name on layouts
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Maximize
 --------------------------------------------------------------------------------------------------------------------------------
 -- CONFIG
 --------------------------------------------------------------------------------------------------------------------------------
@@ -105,7 +107,7 @@ myKeys =
   , ("M-d", spawn "discord")
   , ("M-p", spawn "rofi -show drun")
   , ("M-i", spawn "/home/nicke/Development/idea-IU-223.8836.41/bin/idea.sh")
-  , ("M-v", spawn "code") --vscode
+  , ("M-c", spawn "code") --vscode
   , ("M-S-b", spawn "brave-browser")
   , ("M-b", spawn "thunar")
   , ("M-x", spawn "emacsclient -c -a 'emacs'")
@@ -143,6 +145,9 @@ myWorkspaces :: [String]
 myWorkspaces = ["web","dev","local","4","5"]
 --myWorkspaceIndices = M.fromList $ zipWith () myWorkspaces [1..] -- Usable if using clickable workspaces
 
+toggleStrutsKey :: XConfig Layout -> (KeyMask, KeySym)
+toggleStrutsKey XConfig{ modMask = m } = (m, xK_w)
+
 --------------------------------------------------------------------------------------
 --- Startup Hook autostarting applications
 --------------------------------------------------------------------------------------
@@ -152,17 +157,17 @@ myStartupHook = do
   spawnOnce "picom &"
   spawnOnce "volumeicon &"
   spawnOnce "nm-tray &"
-  spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --iconspacing 2 --widthtype request --transparent true --tint 0x484253 --height 22 &"
+  spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --iconspacing 2 --widthtype request --transparent true --tint 0x484253 --height 20 &"
   spawnOnce "xscreensaver -no-splash &"
 -- spawnOnce "/usr/bin/emacs --daemon &"
 
 ---------------------------------------------------------------------------------------
 --- LAYOUT --- Remember to M-S-SPC for layout to take effect
----        --- Spacing adds a prefix word to the layouts which is removed with CutwordsLeft
+---        --- Spacing adds a certain amount of blank space around every window
 ---------------------------------------------------------------------------------------
-myLayoutHook = renamed [CutWordsLeft 1] $ spacing 4 $ avoidStruts myDefaultLayout
+myLayoutHook = renamed [CutWordsLeft 1] $ spacing 4 $ smartBorders $ avoidStruts myDefaultLayout
   where
-    myDefaultLayout = renamed [Replace "tiled"] tiled |||renamed [Replace " mtiled"] (Mirror tiled) ||| renamed [Replace "full"] Full
+    myDefaultLayout = renamed [Replace "tiled"] tiled |||renamed [Replace " mtiled"] (Mirror tiled) ||| renamed [Replace "full"] Full ||| monocle
 
 tiled = Tall nmaster delta ratio
   where
@@ -171,8 +176,7 @@ tiled = Tall nmaster delta ratio
     delta   = 3/100  -- Percent of screen to increment by when resizing panes
 
 
-
-
+monocle = renamed [Replace "monocle"] Full
 --------------------------------------------------------------------------------------
 --- WINDOW RULES (manageHook)
 --------------------------------------------------------------------------------------
@@ -236,7 +240,7 @@ myXmobarPP = def
 --- MAIN
 ---------------------------------------------------------------------------------------------
 main :: IO ()
-main = xmonad . ewmh . withEasySB (statusBarProp "xmobar ~/.xmobar/xmobarrc" (pure myXmobarPP)) defToggleStrutsKey $ myConfig -- M-b to toggle bar
+main = xmonad . ewmh . withEasySB (statusBarProp "xmobar ~/.xmobar/xmobarrc" (pure myXmobarPP)) toggleStrutsKey $ myConfig -- M-b to toggle bar
 
 myConfig= def
   -- basics
@@ -252,6 +256,5 @@ myConfig= def
         return () >> checkKeymap myConfig myKeys
         myStartupHook
   , manageHook        = myManageHook
---  , keys              = myEvilKeys
   }
   `additionalKeysP` myKeys

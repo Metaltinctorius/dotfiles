@@ -1,11 +1,11 @@
 Config { overrideRedirect = False
-       , font     =        "Norse Bold 14"
+       , font     =        "Norse Bold 15"
        , additionalFonts = ["Mononki Nerd Font 20"
                            ,"Mononoki Nerd Font 13"
                            ,"FontAwesome 14"]
        , bgColor  = "#302A35"
        , fgColor  = "#f8f8f2"
-       , position = TopSize L 96 20
+       , position = TopSize L 100 20
        , alpha    = 235
        , commands = [ Run WeatherX "ESGG"
                        [ ("clear",         "<fn=1></fn>")
@@ -30,11 +30,12 @@ Config { overrideRedirect = False
                     , Run BatteryP ["BAT0"] ["-t", "<acstatus> <fc=#FF8C00><timeleft></fc>", "-H", "20", "-h", "#FF8C00", "-L", "20", "-l", "#8B0000", "--", "-a", "notify-send -u critical 'Battery is running out!'"
                        , "-A", "10", "-O", "<fc=#7FFF00>Charging</fc>", "-o", "<fc=#FF8C00>Battery:</fc><left>%"] 60
                     , Run DynNetwork ["-t", "<fc=#98FB98><fn=2>\xf0ab</fn>  <rx>kB/s</fc> <fc=#FF8C00><fn=2>\xf0aa</fn>  <tx>kB/s</fc>"] 10
+                    , Run Com "/home/nicke/.xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
                     , Run XMonadLog
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog%}<fc=yellow><fn=1></fn></fc> <fc=#ff4500>%osversion%</fc>   <fc=#8be9fd><fn=2></fn></fc>   %date%  %ESGG%  {%disku%    %battery%   %coretemp%    %memory%    %cpu%    %dynnetwork%"
+       , template = "%XMonadLog%}<fc=yellow><fn=1></fn></fc> <fc=#ff4500>%osversion%</fc>   <fc=#8be9fd><fn=2></fn></fc>   %date%  %ESGG%  {%disku%    %battery%   %coretemp%    %memory%    %cpu%    %dynnetwork%   %trayerpad%"
        }
 
 
