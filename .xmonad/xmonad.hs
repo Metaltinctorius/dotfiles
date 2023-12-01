@@ -159,6 +159,9 @@ myStartupHook = do
   spawnOnce "nm-tray &"
   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --iconspacing 2 --widthtype request --transparent true --tint 0x484253 --height 20 &"
   spawnOnce "xscreensaver -no-splash &"
+  spawnOnce "conky -c ~/.conkyrc2"
+  spawnOnce "conky -c ~/.conkyrc"
+
 -- spawnOnce "/usr/bin/emacs --daemon &"
 
 ---------------------------------------------------------------------------------------

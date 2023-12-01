@@ -5,7 +5,7 @@ Config { overrideRedirect = False
                            ,"FontAwesome 14"]
        , bgColor  = "#302A35"
        , fgColor  = "#f8f8f2"
-       , position = TopSize L 100 20
+       , position = TopSize L 96 20
        , alpha    = 235
        , commands = [ Run WeatherX "ESGG"
                        [ ("clear",         "<fn=1></fn>")
