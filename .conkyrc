@@ -1,0 +1,65 @@
+conky.config = {
+alignment = 'top_left',
+      background = false,
+      border_width = 1,
+      cpu_avg_samples = 2,
+      default_color = 'white',
+      default_outline_color = 'white',
+      default_shade_color = 'white',
+      double_buffer = true,
+      draw_borders = false,
+      draw_graph_borders = true,
+      draw_outline = false,
+      draw_shades = false,
+      extra_newline = false,
+      font = 'DejaVu Sans Mono:size=12',
+      gap_x = 5,
+      gap_y = 30,
+      minimum_height = 5,
+      minimum_width = 5,
+      net_avg_samples = 2,
+      no_buffers = true,
+      out_to_console = false,
+      out_to_ncurses = false,
+      out_to_stderr = false,
+      out_to_x = true,
+      own_window = true,
+      own_window_class = 'Conky',
+      own_window_type = 'desktop',
+      own_window_transparent = false,
+      own_window_argb_visual = true,
+      own_window_argb_value = 130,
+      show_graph_range = false,
+      show_graph_scale = false,
+      stippled_borders = 0,
+      update_interval = 1.0,
+      uppercase = false,
+      use_spacer = 'none',
+      use_xft = true,
+}
+
+ conky.text = [[
+${color cyan}Course overview, Databases:
+Week 1: SQL
+Deadline of Assignment Task 0 
+
+Week 2: Design using Entity-Relationship (ER)
+
+Week 3: Design using functional dependencies 
+and normal forms. Deadline of Assignment 
+Task 1 on Tuesday
+
+Week 4: Constrants and triggers + Database 
+connectivity and JDBC. Deadline of Assignment 
+Task 2 on Friday
+
+Week 5: Semi-structured data: JSON and NoSQL
+
+Week 6: Transactions + Relational algebra
+Deadline of Assignment Task 3 on Tuesday
+
+Week 7: Repetition Final deadline for all 
+Assignment Tasks (including resubmissions!) 
+on Friday
+]]
+
